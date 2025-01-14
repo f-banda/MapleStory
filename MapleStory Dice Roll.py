@@ -3,10 +3,13 @@ import time
 import os
 import cv2
 import numpy as np
+import keyboard
+import sys
 
 def find_image(image_name, confidence=0.8):
     # Image(s) must be in a subfolder named images
-    image_path = os.path.join("images", image_name)
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    image_path = os.path.join(script_dir, "images", image_name)
     
     # Check if image file exists
     if not os.path.exists(image_path):
@@ -63,15 +66,22 @@ def click_on_image(image_name, confidence=0.3):
         print(f"Could not find {image_name}.")
     return False
 
+def check_for_exit():
+    # Check for the 'F1' key to exit the program
+    if keyboard.is_pressed("F1"):
+        sys.exit(0)
+
 def main():
     flat_image = "flat13.png"
     dice_image = "dice.png"
 
     flat_confidence = 0.9
-    dice_confidence = 0.3
+    dice_confidence = 0.4
 
     # Loop until stat is found 
     while True:
+        check_for_exit()
+
         print(f"Searching for {flat_image}...")
         flat_location = find_image(flat_image, confidence=flat_confidence)
         
